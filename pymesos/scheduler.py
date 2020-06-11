@@ -28,6 +28,7 @@ class MesosSchedulerDriver(Process, SchedulerDriver):
         self._failover = failover
         self._dict_cls = Dict if use_addict else dict
         self.implicit_acknowledgements = implicit_acknowledgements
+        print("\n\n This is a test\n\n")
         if principal is not None and secret is not None:
             self._basic_credential = 'Basic %s' % (
                 b2a_base64(
@@ -136,9 +137,11 @@ class MesosSchedulerDriver(Process, SchedulerDriver):
         host, port = self.master.split(':', 2)
         port = int(port)
         self._conn = HTTPConnection(host, port, timeout=self._timeout)
+        print("\n\nHTTPConnection returned: " + str(self._conn))
         return self._conn
 
     def _send(self, body, path='/api/v1/scheduler', method='POST', headers={}):
+
         with self._lock:
             conn = self._get_conn()
             if conn is None:
@@ -509,13 +512,14 @@ class MesosSchedulerDriver(Process, SchedulerDriver):
                 self._basic_credential,
             )
 
-        request = ('POST /api/v1/scheduler HTTP/1.1\r\nHost: %s\r\n'
-                   'Content-Type: application/json\r\n'
-                   'Accept: application/json\r\n%s'
-                   'Connection: close\r\nContent-Length: %s\r\n\r\n%s') % (
-                       self.master, _authorization, len(data), data
-        )
-        return request.encode('utf-8')
+        #request = ('POST /api/v1/scheduler HTTP/1.1\r\nHost: %s\r\n'
+        #           'Content-Type: application/json\r\n'
+        #          'Accept: application/json\r\n%s'
+        #          'Connection: close\r\nContent-Length: %s\r\n\r\n%s') % (
+        #              self.master, _authorization, len(data), data
+        #)
+        #return request.encode('utf-8')
+        return 'garbage'
 
     def _close(self):
         if self._conn is not None:
